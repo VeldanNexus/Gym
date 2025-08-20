@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitZone - Gym Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#"><i class="fas fa-dumbbell me-2"></i>FitZone</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showDashboard()">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showBooking()">Book Classes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showManagement()">Manage Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light btn-sm" onclick="logout()">Logout</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="auth-page">
+        <div class="container-fluid h-100">
+            <div class="row h-100">
+                <div class="col-lg-6 d-none d-lg-flex auth-bg">
+                    <div class="d-flex flex-column justify-content-center align-items-center text-white p-5">
+                        <i class="fas fa-dumbbell fa-4x mb-4"></i>
+                        <h2 class="fw-bold mb-3">Welcome to FitZone</h2>
+                        <p class="text-center fs-5">Your comprehensive gym management solution</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-flex justify-content-center align-items-center">
+                    <div class="auth-form">
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold text-primary">Sign In</h3>
+                            <p class="text-muted">Access your gym management dashboard</p>
+                        </div>
+                        <form onsubmit="login(event)">
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
+                        </form>
+                        <p class="text-center">Don't have an account? <a href="#" onclick="showRegister()">Sign up</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="registerPage" class="auth-page d-none">
+        <div class="container-fluid h-100">
+            <div class="row h-100">
+                <div class="col-lg-6 d-none d-lg-flex auth-bg">
+                    <div class="d-flex flex-column justify-content-center align-items-center text-white p-5">
+                        <i class="fas fa-users fa-4x mb-4"></i>
+                        <h2 class="fw-bold mb-3">Join FitZone</h2>
+                        <p class="text-center fs-5">Start managing your gym efficiently today</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-flex justify-content-center align-items-center">
+                    <div class="auth-form">
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold text-primary">Create Account</h3>
+                            <p class="text-muted">Join our gym management platform</p>
+                        </div>
+                        <form onsubmit="register(event)">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
+                        </form>
+                        <p class="text-center">Already have an account? <a href="#" onclick="showLogin()">Sign in</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="d-none">
+        <!-- Dashboard -->
+        <div id="dashboardPage" class="page-content">
+            <div class="container mt-5 pt-4">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="fw-bold text-primary mb-1">Dashboard</h2>
+                        <p class="text-muted">Welcome to your gym management system</p>
+                    </div>
+                </div>
+                
+                <div class="row g-4 mb-5">
+                    <div class="col-md-4">
+                        <div class="stat-card bg-primary">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalCourses">0</h3>
+                                <p>Total Courses</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card bg-success">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalBookings">0</h3>
+                                <p>Total Bookings</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card bg-warning">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="todayClasses">0</h3>
+                                <p>Today's Classes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Recent Activity</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="activity-feed" id="activityFeed">
+                                    <div class="activity-item">
+                                        <i class="fas fa-plus-circle text-success"></i>
+                                        <span>System initialized successfully</span>
+                                        <small class="text-muted ms-auto">Just now</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Booking -->
+        <div id="bookingPage" class="page-content d-none">
+            <div class="container mt-5 pt-4">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="fw-bold text-primary mb-1">Book Classes</h2>
+                        <p class="text-muted">Select a date and book your fitness classes</p>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Calendar</h5>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="changeMonth(-1)">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <span id="currentMonth" class="px-3 py-1"></span>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="changeMonth(1)">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="calendar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Available Classes</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="availableClasses">
+                                    <p class="text-muted">Select a date to see available classes</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">My Bookings</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="myBookings">
+                                    <p class="text-muted">No bookings yet</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Management -->
+        <div id="managementPage" class="page-content d-none">
+            <div class="container mt-5 pt-4">
+                <div class="row mb-4">
+                    <div class="col-12 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2 class="fw-bold text-primary mb-1">Course Management</h2>
+                            <p class="text-muted">Manage your fitness courses and schedules</p>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#courseModal" onclick="openCourseModal()">
+                            <i class="fas fa-plus me-2"></i>Add Course
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="row" id="coursesList">
+                    <!-- Courses will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Modal -->
+    <div class="modal fade" id="courseModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="courseModalTitle">Add Course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form onsubmit="saveCourse(event)">
+                    <div class="modal-body">
+                        <input type="hidden" id="courseId">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Course Title</label>
+                                    <input type="text" class="form-control" id="courseTitle" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Trainer</label>
+                                    <input type="text" class="form-control" id="courseTrainer" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="courseDescription" rows="3"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Image URL</label>
+                                    <input type="url" class="form-control" id="courseImage" placeholder="https://example.com/image.jpg">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Duration (minutes)</label>
+                                    <input type="number" class="form-control" id="courseDuration" min="15" max="180" value="60">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Scheduled Dates</label>
+                            <div id="scheduledDates">
+                                <div class="input-group mb-2">
+                                    <input type="datetime-local" class="form-control schedule-date">
+                                    <button type="button" class="btn btn-outline-danger" onclick="removeSchedule(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="addSchedule()">
+                                <i class="fas fa-plus me-1"></i>Add Date
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Course</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Book Class</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="bookingModalContent">
+                    <!-- Booking content will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmBooking()">Confirm Booking</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
